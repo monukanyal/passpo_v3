@@ -45,11 +45,11 @@
 <p>Dashboard</p>
 <h2>OVERVIEW</h2>
 </div>-->
-<div class="col-md-2 custom_overview">
+<div class="col-md-1 custom_overview">
   <p style="font-size: 15px;color:black">Dashboard</p>
-  <h2>News Headlines</h2>
+  <h2>News:</h2>
 </div>
-<div class="col-md-8 custom_overview">
+<div class="col-md-7 custom_overview">
 
  <marquee direction="left" style="padding:1%;margin-top: 4%;"> 
  <% for(var i=0; i < newsdata.length; i++) { %>
@@ -58,8 +58,30 @@
          <% } %>   
  </marquee>
 </div>
-<div class="col-md-2 custom_overview">
-	<div id="circle" style="max-height: 100px"></div>
+<div class="col-md-4 custom_overview">
+	<div class="" style="margin-top: 6%;min-height: 200px">
+       <!-- Top Info -->
+        <div id="title">
+          <span id="track"></span>
+          <div id="timer">0:00</div>
+          <div id="duration">0:00</div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controlsOuter">
+          <div class="controlsInner">
+            <div id="loading"></div>
+            <div class="btn" id="playBtn"></div>
+            <div class="btn" id="pauseBtn"></div>
+            <div class="btn" id="prevBtn"></div>
+            <div class="btn" id="nextBtn"></div>
+          </div>
+          <!-- <div class="btn" id="playlistBtn"></div> -->
+          <!-- <div class="btn" id="volumeBtn"></div> -->
+        </div>
+        <div id="progress"></div>
+       <!--  <div id="list" style="min-height: 80%;overflow-y: auto;"></div> -->
+    </div>
 </div>
 
 	<div class="" id='body'>
@@ -92,41 +114,11 @@
 		</div>
 	
 		<div class="col-md-4">
-      <div class="" style="margin-top: 6%;min-height: 200px">
-			 <!-- Top Info -->
-			  <div id="title">
-			    <span id="track"></span>
-			    <div id="timer">0:00</div>
-			    <div id="duration">0:00</div>
-			  </div>
+    
+      <ul class="list-group" id="list"></ul>
+      </div>
+       
 
-			  <!-- Controls -->
-			  <div class="controlsOuter">
-			    <div class="controlsInner">
-			      <div id="loading"></div>
-			      <div class="btn" id="playBtn"></div>
-			      <div class="btn" id="pauseBtn"></div>
-			      <div class="btn" id="prevBtn"></div>
-			      <div class="btn" id="nextBtn"></div>
-			    </div>
-			    <!-- <div class="btn" id="playlistBtn"></div> -->
-			    <!-- <div class="btn" id="volumeBtn"></div> -->
-			  </div>
-
-			  <div id="progress"></div>
-
-        <div id="list" style="min-height: 100px;overflow-y: auto;"></div>
-
-
-			  <!-- Volume -->
-			  <div id="volume" class="fadeout">
-			    <div id="barFull" class="bar"></div>
-			    <div id="barEmpty" class="bar"></div>
-			    <div id="sliderBtn"></div>
-			  </div>
-      
-    </div>
-    </div>
   <div class="col-md-12">
     <h2>News Summary</h2>
     <div class="direction-reveal direction-reveal--3-grid-flexbox direction-reveal--demo-swing">
@@ -204,21 +196,29 @@ var Player = function(playlist) {
  // track.innerHTML = '1. ' + playlist[0].title;
   var x=playlist[0].title;
  track.innerHTML = '1. ' + x.split(' ').slice(0,4).join(' ');
-
+  var i=0;
   // Setup the playlist display.
-  playlist.forEach(function(song) {
-
-    var div = document.createElement('p');
-    div.className = 'list-song';
+  playlist.forEach(function(song,i) {
+   
+    var div = document.createElement('li');
+    if(i==0)
+    {
+     div.className = 'list-song list-group-item active';
+    }
+    else
+    {
+      div.className = 'list-song list-group-item ';
+    }
 
     var x=song.title;
     div.innerHTML =x.split(' ').slice(0,4).join(' ');
      //div.value=x.split(' ').slice(0,4).join(' ');
-    div.onclick = function() {
+    div.onclick = function(event) {
+      console.log(event.target);
       player.skipTo(playlist.indexOf(song));
     };
     list.appendChild(div);
-
+     i++;
   });
 };
 Player.prototype = {
