@@ -79,7 +79,7 @@
                 </div>
             
           </div>
-          <div class="panel-body" style="height: 120px;">
+          <div class="panel-body" style="min-height: 200px;">
           
               <div class="row datashow">
                 <div class="col-md-12">
@@ -92,7 +92,7 @@
 		</div>
 	
 		<div class="col-md-4">
-      <div class="" style="margin-top: 6%;">
+      <div class="" style="margin-top: 6%;min-height: 200px">
 			 <!-- Top Info -->
 			  <div id="title">
 			    <span id="track"></span>
@@ -128,14 +128,16 @@
     </div>
     </div>
   <div class="col-md-12">
-    <h2>Examples</h2>
+    <h2>News Summary</h2>
     <div class="direction-reveal direction-reveal--3-grid-flexbox direction-reveal--demo-swing">
   <% for(var i=0; i < newsdata.length; i++) {  %>     
         <a href="#" class="direction-reveal__card">
-          <img src="<%=newsdata[i].picurl %>" style="height:100%;width:100%" alt="Image" class="img-fluid">
+          <img src="static/blur.jpg" style="height:100%;width:100%" alt="Image" class="img-fluid">
           <div class="direction-reveal__overlay direction-reveal__anim--in">
             <h3 class="direction-reveal__title">Description</h3>
-            <p class="direction-reveal__text">dhkshdkak hjakhsdhakh khasdkjajkshdjk kahksdhkjashdkjhas.</p>
+            <p class="direction-reveal__text">
+
+              <!-- <%- JSON.stringify(newsdata[i]) %> --><%= newsdata[i].desc %></p>
           </div>
         </a>
         <%  } %>  

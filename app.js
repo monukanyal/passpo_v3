@@ -318,7 +318,7 @@ app.use(function (err, req, res, next) {
  
   // handle CSRF token errors here 
   res.status(403)
-  res.send('Something is wrong,Please try again later');
+  res.send('Something is wrong in request,Please try again later');
 })
 
 
