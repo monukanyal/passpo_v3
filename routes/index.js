@@ -5,15 +5,20 @@ const router = express.Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn('/');
 var User=require('../Models/user.js'); //including model
 var jwt = require('jsonwebtoken');
+var csrf = require('csurf');  //For csrf
+var csrfProtection = csrf({ cookie: true });
 /* GET home page. */
 
-router.get('/', function (req, res) {
+router.get('/', csrfProtection, function (req, res) {
 
       //console.log('flash'+req.flash('error'));
-      res.render('login',{message:req.flash('error')});
+      res.render('login',{message:req.flash('error'),csrfToken: req.csrfToken()});
 });
 
-router.post('/login',passport.authenticate('local', { successRedirect: '/dashboard', failureRedirect: '/', failureFlash: 'Please provide correct username and password!!',successFlash: 'Welcome!'  }));
+
+
+
+router.post('/login',csrfProtection,passport.authenticate('local', { successRedirect: '/dashboard', failureRedirect: '/', failureFlash: 'Please provide correct username and password!!',successFlash: 'Welcome!'  }));
 
 router.get('/logout', ensureLoggedIn, function(req, res, next) {
     req.session.destroy();

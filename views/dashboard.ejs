@@ -13,7 +13,7 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
-	
+	<link rel="stylesheet" type="text/css" href="/static/direction-img-lib/direction-reveal.css">
 </head>
 <body>
 <header>			
@@ -64,7 +64,6 @@
 
 	<div class="" id='body'>
     <div id="preloader"></div>
-    
 		<div class="col-md-8">
 	
         <div class="panel panel-default">
@@ -80,18 +79,20 @@
                 </div>
             
           </div>
-          <div class="panel-body">
+          <div class="panel-body" style="height: 120px;">
           
               <div class="row datashow">
                 <div class="col-md-12">
                 <p style="color:green">Search now on youtube</p>
+
                </div>
                 </div>  
           </div>
         </div>
 		</div>
 	
-		<div class="col-md-4" style="margin-top: 6%;">
+		<div class="col-md-4">
+      <div class="" style="margin-top: 6%;">
 			 <!-- Top Info -->
 			  <div id="title">
 			    <span id="track"></span>
@@ -112,15 +113,10 @@
 			    <!-- <div class="btn" id="volumeBtn"></div> -->
 			  </div>
 
-			  <!-- Progress -->
-			  <!--<div id="waveform"></div>
-			  <div id="bar"></div>-->
 			  <div id="progress"></div>
 
-			  <!-- Playlist -->
-			 <!--  <div id="playlist"> -->
-			    <div id="list"></div>
-			<!--   </div> -->
+        <div id="list" style="min-height: 100px;overflow-y: auto;"></div>
+
 
 			  <!-- Volume -->
 			  <div id="volume" class="fadeout">
@@ -129,24 +125,32 @@
 			    <div id="sliderBtn"></div>
 			  </div>
       
-		</div>
-    
+    </div>
+    </div>
+  <div class="col-md-12">
+    <h2>Examples</h2>
+    <div class="direction-reveal direction-reveal--3-grid-flexbox direction-reveal--demo-swing">
+  <% for(var i=0; i < newsdata.length; i++) {  %>     
+        <a href="#" class="direction-reveal__card">
+          <img src="<%=newsdata[i].picurl %>" style="height:100%;width:100%" alt="Image" class="img-fluid">
+          <div class="direction-reveal__overlay direction-reveal__anim--in">
+            <h3 class="direction-reveal__title">Description</h3>
+            <p class="direction-reveal__text">dhkshdkak hjakhsdhakh khasdkjajkshdjk kahksdhkjashdkjhas.</p>
+          </div>
+        </a>
+        <%  } %>  
+
+          </div>
+      </div>
 </div>
-<div class="row">
-  <% for(var i=0; i < newsdata.length; i++) {  %>
-        <div class="col-md-3">
-         <img src="<%=newsdata[i].picurl %>" class="img-responsive thumbnail"/>
-         </div>
-         <%  } %>  
-       </div>
+
 </body>
+<script src="static/direction-img-lib/direction.js"></script>
 <script src="static/howler.core.js"></script>
 <script src="static/siriwave.js"></script>
 <script type="text/javascript">
   $(window).load(function(){
-    //$('.searchbtn').click();
     $('#preloader').fadeOut('slow');
-    //$('#preloader').fadeOut('slow',function(){$(this).remove();});
   });
 
   $('.searchbtn').click(function(){
@@ -159,9 +163,8 @@
     },
     function(data, status){
          $('#preloader').fadeOut('slow');
-        // $('#preloader').fadeOut('slow',function(){$(this).remove();});
+     
             var results=data.data;
-            //console.log(results);
             for (var property in results) {
               if(property==0)
               {
@@ -190,6 +193,7 @@ elms.forEach(function(elm) {
  * Includes all methods for playing, skipping, updating the display, etc.
  * @param {Array} playlist Array of objects with playlist song details ({title, file, howl}).
  */
+
 var Player = function(playlist) {
   this.playlist = playlist;
   this.index = 0;
@@ -201,14 +205,18 @@ var Player = function(playlist) {
 
   // Setup the playlist display.
   playlist.forEach(function(song) {
-    var div = document.createElement('div');
+
+    var div = document.createElement('p');
     div.className = 'list-song';
+
     var x=song.title;
     div.innerHTML =x.split(' ').slice(0,4).join(' ');
+     //div.value=x.split(' ').slice(0,4).join(' ');
     div.onclick = function() {
       player.skipTo(playlist.indexOf(song));
     };
     list.appendChild(div);
+
   });
 };
 Player.prototype = {
@@ -572,12 +580,6 @@ var resize = function() {
 window.addEventListener('resize', resize);
 resize();
 
-</script>
-
-	 <!--  <script src="static/player.js"></script> -->
-</html>
-
-<script>
 
 function myFunction() {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -620,3 +622,4 @@ $("document").ready(function(){
 
 });
 </script>
+</html>

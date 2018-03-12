@@ -10,7 +10,8 @@ var mongoose=require('mongoose');
 var sysPath = require('path');
 const fileUpload = require('express-fileupload');
 var Song=require('./Models/Songs.js'); //including model
-
+var helmet = require('helmet');
+app.use(helmet());
 /*---------------------------
 
 var mongodb = require('mongodb');
@@ -45,11 +46,14 @@ var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn('/');
 
+/*------Mongoose Connection setup----------*/
 //mongoose.connect('mongodb://localhost/esferasoft', { useMongoClient: true }); //locally
 mongoose.connect('mongodb://esfera:esfera@ds251277.mlab.com:51277/passpo', { useMongoClient: true });  //live
 mongoose.Promise = global.Promise;
 const MongoStore = require('connect-mongo')(session);
-/*---------passport-----------*/
+/*------Mongoose Connection setup End----------*/
+
+/*---------------passport start------------------*/
 passport.use(new LocalStrategy({
     // by default, local strategy uses username and password, we will override with email
     usernameField : 'email',
@@ -184,7 +188,7 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
-/*------------passport strategy--------------------------*/
+/*------------passport strategy end--------------------------*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -193,9 +197,14 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'fav.png')));
 app.use(fileUpload());
+
+// create application/x-www-form-urlencoded parser
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(cookieParser());
+
 app.use(
   session({
     secret: 'shhhhhhhhh',
@@ -253,7 +262,7 @@ chokidar.watch(paths, {usePolling: true,
                else
                 {
                    //db update 
-                   console.log('db updating');
+                   //console.log('db updating');
                    var newSong=new Song();
                       newSong.Title=path.basename(file);
                       newSong.filepath=path.basename(file);
@@ -303,6 +312,13 @@ chokidar.watch(paths, {usePolling: true,
 });*/
         
 
-
+// error handler 
+app.use(function (err, req, res, next) {
+  if (err.code !== 'EBADCSRFTOKEN') return next(err)
+ 
+  // handle CSRF token errors here 
+  res.status(403)
+  res.send('Something is wrong,Please try again later');
+})
 
 
