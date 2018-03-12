@@ -10,9 +10,8 @@ var mongoose=require('mongoose');
 var sysPath = require('path');
 const fileUpload = require('express-fileupload');
 var Song=require('./Models/Songs.js'); //including model
-var compression = require('compression');
-var helmet = require('helmet');
-app.use(helmet());
+// var helmet = require('helmet');
+// app.use(helmet());
 /*---------------------------
 
 var mongodb = require('mongodb');
@@ -194,7 +193,6 @@ passport.deserializeUser(function(user, done) {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(compression());
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'fav.png')));
 app.use(fileUpload());
