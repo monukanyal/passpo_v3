@@ -114,7 +114,10 @@
 		</div>
 	
 		<div class="col-md-4">
-    
+      <h2>Song List</h2>
+      <p style="font-size: 13px;">Type something in the input field to search the list for specific song:</p>
+      <input class="form-control" id="myInput2" type="text" placeholder="Search.." value="">
+      <br>
       <ul class="list-group" id="list"></ul>
       </div>
        
@@ -147,6 +150,13 @@
     $('#preloader').fadeOut('slow');
   });
 
+    $("#myInput2").keyup(function() {
+      console.log('its working');
+        var value = $(this).val().toLowerCase();
+        $("#list li").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+  });
   $('.searchbtn').click(function(){
      
       var searchterm=$.trim($('.searchterm').val());
@@ -600,28 +610,6 @@ window.onclick = function(event) {
   }
 }
 
-$("document").ready(function(){
-		 var morr=Morris.Donut({
-		  element: 'circle',
-		  data: [
-		    {label: "All", value: 10,labelColor:'#87D37C'},
-		  ]
-		});
 
-		var pageURL = document.location.origin;
-
-	 		var socket = io.connect(pageURL);
-	  		setInterval(function(){ 
-	  			var room ='<%-Name %>';
-			    socket.emit('req_fetchinfo',room);
-			}, 3000);
-
-	   		 socket.on('get_fetchinfo',function(value,color){
-	   		 	//console.log(color);
-			    morr.setData( [{ label: "probe", value: value,labelColor: '#87D37C' } ]);
-			
-			});
-
-});
 </script>
 </html>
