@@ -10,6 +10,7 @@ var mongoose=require('mongoose');
 var sysPath = require('path');
 const fileUpload = require('express-fileupload');
 var Song=require('./Models/Songs.js'); //including model
+var compression = require('compression');
 var helmet = require('helmet');
 app.use(helmet());
 /*---------------------------
@@ -193,7 +194,7 @@ passport.deserializeUser(function(user, done) {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+app.use(compression());
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'fav.png')));
 app.use(fileUpload());
@@ -248,7 +249,7 @@ chokidar.watch(paths, {usePolling: true,
       if(event=="add" || event =="change" || event =="addDir") 
       {
          
-            console.log("Mp3 basename: " + path.basename(file)) ;
+            //console.log("Mp3 basename: " + path.basename(file)) ;
              mv(file, "./public/audio/"+path.basename(file), {clobber: false},function(err) {
                 console.log(err);
                 if(err!=null)
@@ -268,7 +269,7 @@ chokidar.watch(paths, {usePolling: true,
                       newSong.filepath=path.basename(file);
                       newSong.Category='Normal';
                       newSong.save().then((results)=>{
-                         console.log('db updated:'+results);
+                        // console.log('db updated:'+results);
                       }).catch((err)=>{
                         console.log('db updated err:'+err);
                       });
