@@ -12,7 +12,7 @@ var cheerio = require('cheerio');
 
 
 var opts = {
-  maxResults: 8,
+  maxResults: 6,
   key: 'AIzaSyDnjiB1yHIkT3BDVTpf80LqC3fMZ8_ygIU'
 };
 
@@ -89,10 +89,15 @@ router.post('/search', ensureLoggedIn, function(req, res, next)
 	search(searchterm, opts, function(err, results) {
 	  if(err) return console.log(err);
 	      //console.log(results);
-          res.status(200).json({ term:searchterm,data:results });
+	      var x='<div class="owl-carousel owl-theme"><div class="item-video" style="height: 200px" ><a class="owl-video" href="'+results[0]['link']+'" ></a></div><div class="item-video" style="height: 200px" ><a class="owl-video" href="'+results[1]['link']+'" ></a></div><div class="item-video" style="height: 200px" ><a class="owl-video" href="'+results[2]['link']+'" ></a></div><div class="item-video" style="height: 200px" ><a class="owl-video" href="'+results[3]['link']+'" ></a></div><div class="item-video" style="height: 200px" ><a class="owl-video" href="'+results[4]['link']+'" ></a></div><div class="item-video" style="height: 200px" ><a class="owl-video" href="'+results[5]['link']+'" ></a></div> </div>';
+          res.status(200).json({ term:searchterm,data:x });
 	});
 });
 
 
+router.post('/test', ensureLoggedIn, function(req, res, next) 
+{
+	res.render('test');
+});
 
 module.exports = router;

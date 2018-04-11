@@ -11,9 +11,15 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+	<script src="/static/chat.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/chat.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/static/direction-img-lib/direction-reveal.css">
+
+  <link rel="stylesheet" href="/static/dist/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="/static/dist/assets/owl.theme.default.min.css">
+
 </head>
 <body id="body">
 <header>			
@@ -24,7 +30,7 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a href="#" class="navbar-brand colr_brand"><i class="fa fa-leaf" aria-hidden="true"></i>MonuWebApp</a>
+		<a href="" class="navbar-brand colr_brand"><i class="fa fa-leaf" aria-hidden="true"></i>MonuWebApp</a>
 			<div class="collapse navbar-collapse navHeaderCollapse">
 				<ul class="nav navbar-nav navbar-right hover_efct">
 					<li class="active custom_text"><a href="#">America/Chicago</a></li>
@@ -104,10 +110,10 @@
           <div class="panel-body" style="min-height: 200px;">
           
               <div class="row datashow">
-                <div class="col-md-12">
-                <p style="color:green">Search now on youtube</p>
 
-               </div>
+                <!-- <p style="color:green">Search now on youtube</p> -->
+               
+
                 </div>  
           </div>
         </div>
@@ -139,15 +145,121 @@
 
           </div>
       </div>
+        <!--chat start-->
+      <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1" style="margin-left:75%;">
+        <div class="col-xs-12 col-md-12">
+          <div class="panel panel-default">
+                <div class="panel-heading top-bar">
+                    <div class="col-md-8 col-xs-8">
+                        <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> Chat @mk</h3>
+                    </div>
+                    <div class="col-md-4 col-xs-4" style="text-align: right;">
+                      <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
+                      <!--   <a href="#"><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a> -->
+                    </div>
+                </div>
+                <div class="panel-body msg_container_base">
+                    <div class="row msg_container base_sent">
+                        <div class="col-md-10 col-xs-10">
+                            <div class="messages msg_sent">
+                                <p>that mongodb thing looks good, huh?
+                                tiny master db, and huge document store</p>
+                                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-2 avatar">
+                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                        </div>
+                    </div>
+                    <div class="row msg_container base_receive">
+                        <div class="col-md-2 col-xs-2 avatar">
+                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                        </div>
+                        <div class="col-md-10 col-xs-10">
+                            <div class="messages msg_receive">
+                                <p>that mongodb thing looks good, huh?
+                                tiny master db, and huge document store</p>
+                                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row msg_container base_receive">
+                        <div class="col-md-2 col-xs-2 avatar">
+                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                        </div>
+                        <div class="col-xs-10 col-md-10">
+                            <div class="messages msg_receive">
+                                <p>that mongodb thing looks good, huh?
+                                tiny master db, and huge document store</p>
+                                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row msg_container base_sent">
+                        <div class="col-xs-10 col-md-10">
+                            <div class="messages msg_sent">
+                                <p>that mongodb thing looks good, huh?
+                                tiny master db, and huge document store</p>
+                                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-2 avatar">
+                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                        </div>
+                    </div>
+                    <div class="row msg_container base_receive">
+                        <div class="col-md-2 col-xs-2 avatar">
+                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                        </div>
+                        <div class="col-xs-10 col-md-10">
+                            <div class="messages msg_receive">
+                                <p>that mongodb thing looks good, huh?
+                                tiny master db, and huge document store</p>
+                                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row msg_container base_sent">
+                        <div class="col-md-10 col-xs-10 ">
+                            <div class="messages msg_sent">
+                                <p>that mongodb thing looks good, huh?
+                                tiny master db, and huge document store</p>
+                                <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-2 avatar">
+                            <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input" type="text" class="form-control input-sm chat_input" placeholder="Write your message here..." />
+                        <span class="input-group-btn">
+                        <button class="btn btn-primary btn-sm" id="btn-chat">Send</button>
+                        </span>
+                    </div>
+                </div>
+        </div>
+        </div>
+    </div>
+     <!--chat end-->
+
+  
 </div>
 
 </body>
+<!-- <script src="jquery.min.js"></script> -->
+<script src="/static/dist/assets/owl.carousel.min.js"></script>
 <script src="static/direction-img-lib/direction.js"></script>
 <script src="static/howler.core.js"></script>
 <script src="static/siriwave.js"></script>
 <script type="text/javascript">
   $(window).load(function(){
+
     $('#preloader').fadeOut('slow');
+    $('.searchbtn').trigger('click');
+    
   });
 
     $("#myInput2").keyup(function() {
@@ -169,22 +281,73 @@
          $('#preloader').fadeOut('slow');
      
             var results=data.data;
-            for (var property in results) {
-              if(property==0)
+              $('.datashow').html(results);
+
+                  $('.owl-carousel').owlCarousel({
+                              items:1,
+                              margin:10,
+                              autoHeight:true, 
+                              loop:true,
+                              video:true,
+                              lazyLoad:true,
+                              center:true,
+                              responsive:{
+                                480:{
+                                    items:2
+                                },
+                                600:{
+                                    items:4
+                                }
+                              }
+                   });
+        // for (let property in results) 
+            // {
+             
+            //   console.log(property);
+            //    $('#link'+property).attr('href',+results[property]['link']);
+           
+            //   if(property==len)
+            //   {
+                 
+            //       $('.owl-carousel').owlCarousel({
+            //                   items:1,
+            //                   margin:10,
+            //                   autoHeight:true, 
+            //                   loop:false,
+            //                   video:true,
+            //                   lazyLoad:true,
+            //                   center:true,
+            //                   responsive:{
+            //                     480:{
+            //                         items:2
+            //                     },
+            //                     600:{
+            //                         items:4
+            //                     }
+            //                   }
+            //        });
+            //   }
+             /* if(property==0)
               {
-
-
-                   $('.datashow').html('<div class="col-md-3"><div class="thumbnail"><a target="_blank" href="http://api.youtube6download.top/fetch/link.php?i='+results[property]['id']+'" style="text-decoration:none;color:#03a730;"><strong>Download MP3</strong></a><img src="'+results[property]['thumbnails']['default']['url']+'" alt="Lights" style="width:100%;height:100px"><div class="caption"><p>'+results[property]['title']+'</p></div></a></div></div>');
+               
+                
+                    $('.datashow').html('<div class="col-md-3"><div class="thumbnail"><a target="_blank" href="http://api.youtube6download.top/fetch/link.php?i='+results[property]['id']+'" style="text-decoration:none;color:#03a730;"><strong>Download MP3</strong></a><img src="'+results[property]['thumbnails']['default']['url']+'" alt="Lights" style="width:100%;height:100px"><div class="caption"><p>'+results[property]['title']+'</p></div></a></div></div>');
             
               }
               else
               {
-                $('.datashow').append('<div class="col-md-3"><div class="thumbnail"><a target="_blank" href="http://api.youtube6download.top/fetch/link.php?i='+results[property]['id']+'" style="text-decoration:none;color:#03a730;"><strong>Download MP3</strong></a><img src="'+results[property]['thumbnails']['default']['url']+'" alt="Lights" style="width:100%;height:100px"><div class="caption"><p>'+results[property]['title']+'</p></div></a></div></div>');
+                  
                 
-              }
+                $('.datashow').append('<div class="col-md-3"><div class="thumbnail"><a target="_blank" href="http://api.youtube6download.top/fetch/link.php?i='+results[property]['id']+'" style="text-decoration:none;color:#03a730;"><strong>Download MP3</strong></a><img src="'+results[property]['thumbnails']['default']['url']+'" alt="Lights" style="width:100%;height:100px"><div class="caption"><p>'+results[property]['title']+'</p></div></a></div></div>');
+              } 
             }
+              */
+                          
             
-    });
+            
+
+                  
+          });
   });
  // Cache references to DOM elements.
 var elms = ['track', 'timer', 'duration', 'playBtn', 'pauseBtn', 'prevBtn', 'nextBtn', 'playlistBtn', 'volumeBtn', 'progress', 'bar', 'wave', 'loading', 'playlist', 'list', 'volume', 'barEmpty', 'barFull', 'sliderBtn'];
@@ -213,7 +376,8 @@ var Player = function(playlist) {
     var div = document.createElement('li');
     if(i==0)
     {
-     div.className = 'list-song list-group-item active';
+     //div.className = 'list-song list-group-item active';
+     div.className = 'list-song list-group-item';
     }
     else
     {
