@@ -1,5 +1,5 @@
 {
-  "name": "passpo_v2",
+  "name": "passpo_v3",
   "version": "1.0.0",
   "description": "its sociallogin app",
   "main": "app.js",
@@ -43,6 +43,7 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "paypal-rest-sdk": "^1.8.1",
     "random-number": "0.0.9",
     "randomcolor": "^0.5.3",
     "request": "^2.83.0",
@@ -53,7 +54,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/monukanyal/passpo_v2.git"
+    "url": "git+https://github.com/monukanyal/passpo_v3.git"
   },
   "keywords": [
     "passport"

@@ -9,7 +9,12 @@ var Song=require('../Models/Songs.js'); //including model
 var search = require('youtube-search');
 var request = require('request');
 var cheerio = require('cheerio');
-
+var paypal = require('paypal-rest-sdk');
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': 'AaSp8eXOVxdKgIuZevbNMx5VaBovlZYpGkhDpx6yRMEQSPpFrNqfpiyWUbGm-VsMLdjdNGQV7tdLd_Qg',
+  'client_secret': 'EO-UAnZOLvru8QMdUJwpydJm8uxApPfFt-uRIMnuR_466eC0CVeA-FL8oPwM_98-XbMKH6wOMRGsSeAy'
+});
 
 var opts = {
   maxResults: 6,
@@ -95,9 +100,91 @@ router.post('/search', ensureLoggedIn, function(req, res, next)
 });
 
 
-router.post('/test', ensureLoggedIn, function(req, res, next) 
+router.get('/test', ensureLoggedIn, function(req, res, next) 
 {
 	res.render('test');
+});
+
+router.post('/payment',ensureLoggedIn,function(req,res,next){
+	var create_payment_json = {
+    "intent": "sale",
+    "payer": {
+        "payment_method": "paypal"
+    },
+    "redirect_urls": {
+        "return_url": "http://localhost:8080/dashboard/success",
+        "cancel_url": "http://localhost:8080/dashboard/cancel"
+    },
+    "transactions": [{
+        "item_list": {
+            "items": [{
+                "name": "mobile best",
+                "sku": "item123123",
+                "price": "2.00",
+                "currency": "GBP",
+                "quantity": 1
+            }]
+        },
+        "amount": {
+            "currency": "GBP",
+            "total": "2.00"
+        },
+        "description": "This is the payment description."
+    }]
+};
+
+
+paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+        throw error;
+    } else {
+        console.log("Create Payment Response");
+        console.log(payment);
+        for(let i=0;i<payment.links.length;i++)
+        {
+        	if(payment.links[i].rel==='approval_url')
+        	{
+        		res.redirect(payment.links[i].href);
+        	}
+        }
+        //res.status(200).json({ result:payment });
+    }
+});
+
+});
+
+router.get('/success',function(req,res,next){
+		var payerid=req.query.PayerID;
+		var paymentId=req.query.paymentId;
+		//res.send({'payerid':payerid,'paymentId':paymentId});
+		var execute_payment_json = {
+		    "payer_id": payerid,
+		    "transactions": [{
+		        "amount": {
+		            "currency": "GBP",
+		            "total": "2.00"
+		        }
+		    }]
+		};
+
+		paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+		    if (error) {
+		        console.log(error.response);
+		        res.render('success',{result:'',error:true});
+		        //throw error;
+		    } else {
+		        console.log("Get Payment Response");
+		      
+		        res.render('success',{result:payment,error:false});
+		    }
+		});
+
+
+});
+
+
+router.get('/cancel',function(req,res,next){
+	   res.send('cancel');
 });
 
 module.exports = router;

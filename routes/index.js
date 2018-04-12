@@ -32,7 +32,8 @@ router.get('/auth/google',
 router.get('/auth/google/callback', 
   passport.authenticate('google', { successRedirect: '/dashboard', failureRedirect: '/', failureFlash: 'Something is wrong!',successFlash: 'Welcome!'  }),
   function(req, res) {
-    res.redirect('/dashboard');
+    //res.redirect('/dashboard');
+    res.redirect('/dashboard/test');
   });
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
