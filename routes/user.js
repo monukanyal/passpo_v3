@@ -9,12 +9,7 @@ var Song=require('../Models/Songs.js'); //including model
 var search = require('youtube-search');
 var request = require('request');
 var cheerio = require('cheerio');
-var paypal = require('paypal-rest-sdk');
-paypal.configure({
-  'mode': 'sandbox', //sandbox or live
-  'client_id': 'AaSp8eXOVxdKgIuZevbNMx5VaBovlZYpGkhDpx6yRMEQSPpFrNqfpiyWUbGm-VsMLdjdNGQV7tdLd_Qg',
-  'client_secret': 'EO-UAnZOLvru8QMdUJwpydJm8uxApPfFt-uRIMnuR_466eC0CVeA-FL8oPwM_98-XbMKH6wOMRGsSeAy'
-});
+require('../config.js');
 
 var opts = {
   maxResults: 6,
@@ -102,9 +97,12 @@ router.post('/search', ensureLoggedIn, function(req, res, next)
 
 router.get('/shop', ensureLoggedIn, function(req, res, next) 
 {
-	res.render('test_server');
+	//res.render('test_server'); //server side paypal payment
+	res.render('test_client'); //client side paypal payment
+
 });
 
+/* paypal */
 router.post('/payment',ensureLoggedIn,function(req,res,next){
 
 	var create_payment_json = {
@@ -198,4 +196,27 @@ router.get('/cancel',function(req,res,next){
 	   res.send('cancel');
 });
 
+/*-- paypal end --*/
+
+/*--stripe start---*/
+router.post('/charge',function(req,res){
+			var token=req.body.stripetoken; 
+			var charge=req.body.stripecharge;  //session cart total charge
+			
+			stripe.charges.create({
+			  amount: charge,
+			  currency: "GBP",
+			  source:token, // obtained with Stripe.js
+			  description: "Charge for user"
+			}, function(err, charge) {
+			  // asynchronously called
+			  if(err && err.type =="StripeCardError")
+			  {
+			  	console.log('card is invalid');
+			  }
+			  res.status(200).json({ result:charge });
+		});
+});
+
+/*--stripe end ---*/
 module.exports = router;

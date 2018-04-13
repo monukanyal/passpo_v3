@@ -10,7 +10,11 @@
   <script type="text/javascript" src="/static/shop/script.js"></script>
   <link rel="stylesheet" type="text/css" href="/static/shop/style.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!--paypal lib -->
   <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <!--strip lib-->
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+
 </head>
 <body>
   
@@ -119,7 +123,8 @@
                         <div class="row" align="center">
                           <div class="col-md-12">
                             <div>Grand Total : <label id="totalLabel">0</label><label>£</label>
-                             
+                             </div>
+                             <div class="col-md-6">
                             <p id="msg" class="hidden error" style="color:crimson;font-size: 9px">Please check the checkbox</p>
 
                             <p>
@@ -127,16 +132,11 @@
                             </p>
 
                             <div id="paypal-button-container"></div>
-                            <!--paypal buynow start-->
-                             <!-- <form class="paypal" action="/dashboard/payment" method="post" >
-                                  <input type="hidden" name="cmd" value="_s-xclick">
-                                  <input type="hidden" name="hosted_button_id" value="HEKQY26JUGKZJ">
-                                  <button type="submit" style="border: 0px"><img border="0" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_buynowCC_LG.gif" border="0" alt="PayPal – The safer, easier way to pay online"></button>
-                                  <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-                              </form>  -->
-                      
-                            <!--paypal buynow end-->
-
+                            </div>
+                            <div class="col-md-6">
+                                 &nbsp;
+                            <button id="customButton" class="btn btn-primary">Stripe Checkout</button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -163,7 +163,7 @@
 
 
 <script>
-
+/* paypal */
     function isValid() {
         return document.querySelector('#check').checked;
     }
@@ -234,6 +234,7 @@
 
                 if(y)
                 {
+                      localStorage.setItem('total',z);
                       // console.log('final list');
                       // console.log(y);
                       // console.log(z);
@@ -262,11 +263,44 @@
 
             return actions.payment.execute().then(function() {
                 window.alert('Payment Complete!');
+                localStorage.removeItem('purchases');
             });
         }
 
     }, '#paypal-button-container');
+/*--paypal end --*/
 
+  /* --stripe start--*/
+  var handler = StripeCheckout.configure({
+    key: 'pk_test_031SDkDPI2e64WhNF2uRXXUT',
+    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+    locale: 'auto',
+    token: function(token) {
+      // You can access the token ID with `token.id`.
+      // Get the token ID to your server-side code for use
+      $.post("/dashboard/charge",{stripetoken: token.id,stripecharge:localStorage.getItem('total')}, function(data, status){
+          alert("Data: " + data + "\nStatus: " + status);
+      });
+    }
+  });
+
+  document.getElementById('customButton').addEventListener('click', function(e) {
+    // Open Checkout with further options:
+    handler.open({
+      name: 'Demo Site',
+      description: '2 widgets',
+      amount:z,
+      currency:'GBP'
+    });
+    e.preventDefault();
+  });
+
+  // Close Checkout on page navigation:
+  window.addEventListener('popstate', function() {
+    handler.close();
+  });
+  /*--stripe end --*/
+</script>
 </script>
 </body>
 </html>

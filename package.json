@@ -49,6 +49,7 @@
     "request": "^2.83.0",
     "serve-favicon": "^2.4.0",
     "socket.io": "^2.0.4",
+    "stripe": "^5.8.0",
     "webrtc.io": "0.0.4",
     "youtube-search": "^1.0.10"
   },
