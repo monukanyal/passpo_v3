@@ -119,21 +119,17 @@
                         <div class="row" align="center">
                           <div class="col-md-12">
                             <div>Grand Total : <label id="totalLabel">0</label><label>£</label>
-                             
-                            <p id="msg" class="hidden error" style="color:crimson;font-size: 9px">Please check the checkbox</p>
-
-                            <p>
-                                <label><input id="check" type="checkbox"> Check here to continue</label>
-                            </p>
-
-                            <div id="paypal-button-container"></div>
                             <!--paypal buynow start-->
-                             <!-- <form class="paypal" action="/dashboard/payment" method="post" >
+                             <form class="paypal" action="/dashboard/payment" method="post" >
+                                  <p>
+                                    <label><input id="check" type="checkbox" required> Check here to continue</label>
+                                </p>
+
                                   <input type="hidden" name="cmd" value="_s-xclick">
                                   <input type="hidden" name="hosted_button_id" value="HEKQY26JUGKZJ">
-                                  <button type="submit" style="border: 0px"><img border="0" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_buynowCC_LG.gif" border="0" alt="PayPal – The safer, easier way to pay online"></button>
+                                  <button type="submit" style="border: 0px"><img border="0" src="/static/checkout.png"></button>
                                   <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-                              </form>  -->
+                              </form>  
                       
                             <!--paypal buynow end-->
 
@@ -162,111 +158,47 @@
 </div>
 
 
-<script>
+ <script>
+        paypal.Button.render({
 
-    function isValid() {
-        return document.querySelector('#check').checked;
-    }
+            env: 'sandbox', // sandbox | production
 
-    function onChangeCheckbox(handler) {
-        document.querySelector('#check').addEventListener('change', handler);
-    }
+            // Show the buyer a 'Pay Now' button in the checkout flow
+            commit: true,
 
-    function toggleValidationMessage() {
-        document.querySelector('#msg').style.display = (isValid() ? 'none' : 'block');
-    }
+            // payment() is called when the button is clicked
+            payment: function() {
 
-    function toggleButton(actions) {
-        return isValid() ? actions.enable() : actions.disable();
-    }
+                // Set up a url on your server to create the payment
+                var CREATE_URL = '/dashboard/payment';
 
-    // Render the PayPal button
+                // Make a call to your server to set up the payment
+                return paypal.request.post(CREATE_URL)
+                    .then(function(res) {
+                        return res.paymentID;
+                    });
+            },
 
-    paypal.Button.render({
+            // onAuthorize() is called when the buyer approves the payment
+            onAuthorize: function(data, actions) {
 
-        // Set your environment
+                // Set up a url on your server to execute the payment
+                var EXECUTE_URL = '/dashboard/execute';
 
-        env: 'sandbox', // sandbox | production
+                // Set up the data you need to pass to your server
+                var data = {
+                    paymentId: data.paymentID,
+                    payerID: data.payerID
+                };
 
-        // PayPal Client IDs - replace with your own
-        // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+                // Make a call to your server to execute the payment
+                return paypal.request.post(EXECUTE_URL, data)
+                    .then(function (res) {
+                        window.alert('Payment Complete!');
+                    });
+            }
 
-        client: {
-            sandbox:    'AaSp8eXOVxdKgIuZevbNMx5VaBovlZYpGkhDpx6yRMEQSPpFrNqfpiyWUbGm-VsMLdjdNGQV7tdLd_Qg',
-            production: '<insert production client id>'
-        },
-
-        validate: function(actions) {
-            toggleButton(actions);
-
-            onChangeCheckbox(function() {
-                toggleButton(actions);
-            });
-        },
-
-        onClick: function() {
-            toggleValidationMessage();
-        },
-
-        // Wait for the PayPal button to be clicked
-
-        payment: function(data, actions) {
-              
-            // Make a client-side call to the REST api to create the payment
-                var products=JSON.parse(localStorage.getItem('purchases',JSON.stringify(products)));
-                var y=[];
-                var z=0;
-                for(var j=0;j<products.length;j++)
-                {        
-                   var x={};
-                   (function(c) {
-                            //console.log(c);
-                            x['name']=products[j].name;
-                            x['sku']="item"+products[j].id;
-                            x['price']= products[j].price;
-                            x['currency']="GBP";
-                            x['quantity']= products[j].qty;
-                            z=z+(products[j].price *products[j].qty);
-                             y.push(x);
-                    })(j);
-                   
-                }
-
-                if(y)
-                {
-                      // console.log('final list');
-                      // console.log(y);
-                      // console.log(z);
-                return actions.payment.create({
-                          payment: {
-                              transactions: [{
-                                            "item_list": {
-                                                "items": y
-                                            },
-                                            "amount": {
-                                                "currency": "GBP",
-                                                "total": z
-                                            },
-                                            "description": "Payment with @mkweb."
-                                        }]
-                          }
-                      });
-              }
-        },
-
-        // Wait for the payment to be authorized by the customer
-
-        onAuthorize: function(data, actions) {
-
-            // Execute the payment
-
-            return actions.payment.execute().then(function() {
-                window.alert('Payment Complete!');
-            });
-        }
-
-    }, '#paypal-button-container');
-
-</script>
+        }, '#paypal-button-container');
+    </script>
 </body>
 </html>

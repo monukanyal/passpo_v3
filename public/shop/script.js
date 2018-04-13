@@ -30,7 +30,7 @@ function updatePurchases(purch)
 	localStorage.setItem('purchases',JSON.stringify(purch));
 	var num= JSON.parse(localStorage.getItem('purchases',JSON.stringify(products)));
   		$('.badge').html(num.length);
-  		console.log(num.length);
+  	
   		
 }
 function savedetails()

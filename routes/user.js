@@ -100,12 +100,13 @@ router.post('/search', ensureLoggedIn, function(req, res, next)
 });
 
 
-router.get('/test', ensureLoggedIn, function(req, res, next) 
+router.get('/shop', ensureLoggedIn, function(req, res, next) 
 {
-	res.render('test');
+	res.render('test_server');
 });
 
 router.post('/payment',ensureLoggedIn,function(req,res,next){
+
 	var create_payment_json = {
     "intent": "sale",
     "payer": {
@@ -118,16 +119,27 @@ router.post('/payment',ensureLoggedIn,function(req,res,next){
     "transactions": [{
         "item_list": {
             "items": [{
-                "name": "mobile best",
-                "sku": "item123123",
-                "price": "2.00",
-                "currency": "GBP",
-                "quantity": 1
-            }]
+                        "name": "bowling",
+                        "description": "Bowling Team Shirt",
+                        "quantity": "5",
+                        "price": "3",
+                       // "tax": "0.01",
+                        "sku": "1",
+                        "currency": "GBP"
+                    },
+                    {
+                        "name": "mesh",
+                        "description": "80s Mesh Sleeveless Shirt",
+                        "quantity": "1",
+                        "price": "5",
+                       // "tax": "0.02",
+                        "sku": "product34",
+                        "currency": "GBP"
+                    }]
         },
         "amount": {
             "currency": "GBP",
-            "total": "2.00"
+            "total": "20.00"
         },
         "description": "This is the payment description."
     }]
@@ -138,8 +150,7 @@ paypal.payment.create(create_payment_json, function (error, payment) {
     if (error) {
         throw error;
     } else {
-        console.log("Create Payment Response");
-        console.log(payment);
+       
         for(let i=0;i<payment.links.length;i++)
         {
         	if(payment.links[i].rel==='approval_url')
@@ -147,7 +158,7 @@ paypal.payment.create(create_payment_json, function (error, payment) {
         		res.redirect(payment.links[i].href);
         	}
         }
-        //res.status(200).json({ result:payment });
+       
     }
 });
 
@@ -162,7 +173,7 @@ router.get('/success',function(req,res,next){
 		    "transactions": [{
 		        "amount": {
 		            "currency": "GBP",
-		            "total": "2.00"
+		            "total": "20.00"
 		        }
 		    }]
 		};
@@ -170,18 +181,18 @@ router.get('/success',function(req,res,next){
 		paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
 		    if (error) {
 		        console.log(error.response);
+		        //res.status(200).json({ res:'',error:true });
 		        res.render('success',{result:'',error:true});
 		        //throw error;
 		    } else {
-		        console.log("Get Payment Response");
-		      
-		        res.render('success',{result:payment,error:false});
+		       // console.log("Get Payment Response");
+		       	//res.status(200).json({ res:payment,error:true });
+		       res.render('success',{result:payment,error:false});
 		    }
 		});
 
 
 });
-
 
 router.get('/cancel',function(req,res,next){
 	   res.send('cancel');
